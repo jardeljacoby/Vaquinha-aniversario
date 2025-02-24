@@ -76,15 +76,15 @@
             let response = await fetch("https://docs.google.com/spreadsheets/d/1r6KiQre7fttVOwdhrWqYg6NXZEup9JTQY2XRQrrw4vw/gviz/tq?tq=SELECT+A,B&gid=0&tqx=out:json");
             let text = await response.text();
 
-            // Se a resposta começar com '<', significa que houve erro (como a planilha estar privada)
-            if (text.startsWith('<')) {
-                console.error("Erro: A API do Google Sheets não retornou JSON. Verifique se a planilha está pública.");
-                return;
+            // Verifica se a resposta contém a string esperada
+            if (!text.includes("google.visualization.Query.setResponse")) {
+                throw new Error("A resposta da API não está no formato esperado.");
             }
 
-            let json = JSON.parse(text.replace(/^.*?\(/, "").slice(0, -2));
+            // Remove a parte indesejada do início e final da string antes de converter para JSON
+            let json = JSON.parse(text.substring(text.indexOf("(") + 1, text.lastIndexOf(")")));
 
-            console.log("JSON Completo da Planilha:", json); // Debug
+            console.log("JSON Extraído:", json); // Debug
 
             let rows = json.table.rows;
             if (!rows || rows.length === 0 || !rows[0].c) {
