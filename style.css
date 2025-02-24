@@ -31,6 +31,8 @@ body {
     height: 30px;
     width: 100%;
     margin: 20px 0;
+    display: flex;
+    align-items: center;
 }
 
 .progress-bar {
@@ -39,15 +41,18 @@ body {
     width: 0%;
     border-radius: 10px;
     transition: width 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .progress-text {
     position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
     font-weight: bold;
     color: white;
+    width: 100%;
+    text-align: center;
 }
 
 .pix-link {
