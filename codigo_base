@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaquinha do Aniversário</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .container { max-width: 500px; margin: auto; }
+        .progress-container { width: 100%; background: #ddd; border-radius: 5px; }
+        .progress-bar { height: 30px; width: 0%; background: #4CAF50; border-radius: 5px; text-align: center; color: white; line-height: 30px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ajude na compra da minha cervejeira!</h1>
+        <h2>Meta: R$ 1.700,00</h2>
+        <p>Faça um Pix usando o QR Code abaixo e contribua!</p>
+        <img src="qr_code.png" alt="QR Code para Pix">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar">0%</div>
+        </div>
+        <p>Valor arrecadado: <span id="valor-arrecadado">R$ 0,00</span></p>
+    </div>
+
+    <script>
+        async function atualizarProgresso() {
+            try {
+                let response = await fetch('https://docs.google.com/spreadsheets/d/1r6KiQre7fttVOwdhrWqYg6NXZEup9JTQY2XRQrrw4vw/gviz/tq?tqx=out:json');
+                let text = await response.text();
+                let json = JSON.parse(text.substring(47, text.length - 2));
+                let rows = json.table.rows;
+                
+                let meta = parseFloat(rows[0].c[1].v);
+                let arrecadado = parseFloat(rows[1].c[1].v);
+                
+                let progresso = (arrecadado / meta) * 100;
+                document.getElementById('valor-arrecadado').innerText = `R$ ${arrecadado.toFixed(2)}`;
+                document.getElementById('progress-bar').style.width = `${progresso}%`;
+                document.getElementById('progress-bar').innerText = `${Math.round(progresso)}%`;
+            } catch (error) {
+                console.error('Erro ao buscar dados da planilha:', error);
+            }
+        }
+
+        atualizarProgresso();
+        setInterval(atualizarProgresso, 30000); // Atualiza a cada 30 segundos
+    </script>
+</body>
+</html>
