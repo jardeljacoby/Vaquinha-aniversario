@@ -87,12 +87,12 @@ h1 {
 }
 
 .section img {
-    max-width: 48%;
+    max-width: 40%;
     border-radius: 10px;
 }
 
 .section .text {
-    max-width: 48%;
+    max-width: 55%;
     text-align: left;
 }
 
@@ -103,7 +103,7 @@ h1 {
     }
     .section img {
         order: 2;
-        max-width: 100%;
+        max-width: 80%;
     }
     .section .text {
         order: 1;
