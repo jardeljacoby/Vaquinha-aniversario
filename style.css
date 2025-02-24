@@ -96,7 +96,12 @@ h1 {
         flex-direction: column;
         text-align: center;
     }
-    .section img, .section .text {
+    .section img {
+        order: 2;
+        max-width: 100%;
+    }
+    .section .text {
+        order: 1;
         max-width: 100%;
     }
 }
