@@ -64,27 +64,23 @@
     </div>
 
 <script>
-    function copyPixKey() {
-        const pixKey = "00020126580014BR.GOV.BCB.PIX01367f6e78bb-7bf7-49d2-a9ac-18989116a99c5204000053039865802BR5922Jardel Jacoby Fagundes6009SAO PAULO62140510e97fkV4FBO6304FC8F";
-        navigator.clipboard.writeText(pixKey).then(() => {
-            alert("Chave PIX copiada!");
-        });
-    }
-
     async function atualizarProgresso() {
         try {
             let response = await fetch("https://docs.google.com/spreadsheets/d/1r6KiQre7fttVOwdhrWqYg6NXZEup9JTQY2XRQrrw4vw/gviz/tq?tq=SELECT+A,B&gid=0&tqx=out:json");
             let text = await response.text();
 
-            // Verifica se a resposta contém a string esperada
+            console.log("Resposta bruta da API:", text); // Debug para ver a resposta real
+
+            // Verifica se a resposta contém "setResponse", indicando que os dados estão corretos
             if (!text.includes("google.visualization.Query.setResponse")) {
                 throw new Error("A resposta da API não está no formato esperado.");
             }
 
-            // Remove a parte indesejada do início e final da string antes de converter para JSON
-            let json = JSON.parse(text.substring(text.indexOf("(") + 1, text.lastIndexOf(")")));
+            // Remover caracteres extras antes de converter para JSON
+            let jsonText = text.substring(text.indexOf("(") + 1, text.lastIndexOf(")"));
+            let json = JSON.parse(jsonText);
 
-            console.log("JSON Extraído:", json); // Debug
+            console.log("JSON Extraído:", json); // Debug para ver os dados extraídos
 
             let rows = json.table.rows;
             if (!rows || rows.length === 0 || !rows[0].c) {
@@ -93,8 +89,8 @@
             }
 
             // Extraindo os valores corretamente
-            let meta = parseFloat(rows[0].c[0]?.v || 2000); // Meta
-            let arrecadado = parseFloat(rows[0].c[1]?.v || 0); // Valor arrecadado
+            let meta = parseFloat(rows[0].c[0]?.v || 2000);
+            let arrecadado = parseFloat(rows[0].c[1]?.v || 0);
 
             console.log("Meta:", meta, "Arrecadado:", arrecadado); // Debug
 
