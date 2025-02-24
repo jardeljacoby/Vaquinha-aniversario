@@ -71,20 +71,35 @@
             });
         }
 
+    <script>
+    function copyPixKey() {
+        const pixKey = "00020126580014BR.GOV.BCB.PIX01367f6e78bb-7bf7-49d2-a9ac-18989116a99c5204000053039865802BR5922Jardel Jacoby Fagundes6009SAO PAULO62140510e97fkV4FBO6304FC8F";
+        navigator.clipboard.writeText(pixKey).then(() => {
+            alert("Chave PIX copiada!");
+        });
+    }
+
     async function atualizarProgresso() {
         try {
             let response = await fetch("https://docs.google.com/spreadsheets/d/1r6KiQre7fttVOwdhrWqYg6NXZEup9JTQY2XRQrrw4vw/gviz/tq?tqx=out:json");
             let text = await response.text();
-            let json = JSON.parse(text.substring(47, text.length - 2)); // Ajuste para remover texto extra
+
+            // Remove o prefixo do Google Sheets antes de converter para JSON
+            let json = JSON.parse(text.replace(/^.*?\(/, "").slice(0, -2));
+
+            console.log("Dados da planilha:", json); // Debug para ver os dados
 
             let rows = json.table.rows;
-            let meta = parseFloat(rows[0].c[1].v); // Valor da meta (2000)
-            let arrecadado = parseFloat(rows[1].c[1].v); // Valor arrecadado
+            let meta = parseFloat(rows[0].c[1]?.v || 2000); // Meta (2000 por padrão)
+            let arrecadado = parseFloat(rows[1].c[1]?.v || 0); // Arrecadado (0 se não encontrado)
+
+            console.log("Meta:", meta, "Arrecadado:", arrecadado); // Debug
 
             let progresso = (arrecadado / meta) * 100;
             document.getElementById("total-arrecadado").innerText = `R$ ${arrecadado.toFixed(2)}`;
             document.getElementById("progress-bar").style.width = `${progresso}%`;
             document.getElementById("progress-text").innerText = `${Math.round(progresso)}%`;
+
         } catch (error) {
             console.error("Erro ao buscar dados da planilha:", error);
         }
@@ -92,6 +107,8 @@
 
     atualizarProgresso();
     setInterval(atualizarProgresso, 30000); // Atualiza a cada 30 segundos
+</script>
+
 </script>
 
 </body>
