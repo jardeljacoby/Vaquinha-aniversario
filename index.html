@@ -62,6 +62,14 @@
     </div>
 
 <script>
+    function copyPixKey() {
+        const pixKey = "00020126580014BR.GOV.BCB.PIX01367f6e78bb-7bf7-49d2-a9ac-18989116a99c5204000053039865802BR5922Jardel Jacoby Fagundes6009SAO PAULO62140510e97fkV4FBO6304FC8F";
+        navigator.clipboard.writeText(pixKey).then(() => {
+            alert("Chave PIX copiada!");
+        }).catch(err => {
+            console.error("Erro ao copiar a chave PIX:", err);
+        });
+    }
     async function atualizarProgresso() {
         try {
             let response = await fetch("https://docs.google.com/spreadsheets/d/1r6KiQre7fttVOwdhrWqYg6NXZEup9JTQY2XRQrrw4vw/gviz/tq?tq=SELECT+A,B&gid=0&tqx=out:json");
