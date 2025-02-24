@@ -98,9 +98,20 @@ h1 {
 
 @media (max-width: 768px) {
     .section {
-        flex-direction: column;
+        flex-direction: column !important;
         text-align: center;
     }
+    .section .text {
+        order: 1;
+        max-width: 100%;
+    }
+    .section img {
+        order: 2;
+        max-width: 100%;
+        display: block;
+        margin: 10px auto;
+    }
+}
     .section img {
         order: 2;
         max-width: 80%;
@@ -109,5 +120,3 @@ h1 {
         order: 1;
         max-width: 100%;
     }
-}
-}
