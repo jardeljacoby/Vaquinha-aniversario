@@ -76,13 +76,15 @@
             let response = await fetch("https://docs.google.com/spreadsheets/d/1r6KiQre7fttVOwdhrWqYg6NXZEup9JTQY2XRQrrw4vw/gviz/tq?tq=SELECT+A,B&gid=0&tqx=out:json");
             let text = await response.text();
 
+            // Se a resposta começar com '<', significa que houve erro (como a planilha estar privada)
             if (text.startsWith('<')) {
-                throw new Error("Resposta inválida da API. Verifique se a planilha está pública.");
+                console.error("Erro: A API do Google Sheets não retornou JSON. Verifique se a planilha está pública.");
+                return;
             }
 
             let json = JSON.parse(text.replace(/^.*?\(/, "").slice(0, -2));
 
-            console.log("JSON Completo da Planilha:", json); // Debug para ver os dados
+            console.log("JSON Completo da Planilha:", json); // Debug
 
             let rows = json.table.rows;
             if (!rows || rows.length === 0 || !rows[0].c) {
@@ -90,7 +92,7 @@
                 return;
             }
 
-            // Extraindo os valores da mesma linha
+            // Extraindo os valores corretamente
             let meta = parseFloat(rows[0].c[0]?.v || 2000); // Meta
             let arrecadado = parseFloat(rows[0].c[1]?.v || 0); // Valor arrecadado
 
@@ -109,5 +111,6 @@
     atualizarProgresso();
     setInterval(atualizarProgresso, 30000); // Atualiza a cada 30 segundos
 </script>
+
 </body>
 </html>
