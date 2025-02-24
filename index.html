@@ -70,6 +70,29 @@
                 alert("Chave PIX copiada!");
             });
         }
-    </script>
+
+    async function atualizarProgresso() {
+        try {
+            let response = await fetch("https://docs.google.com/spreadsheets/d/1r6KiQre7fttVOwdhrWqYg6NXZEup9JTQY2XRQrrw4vw/gviz/tq?tqx=out:json");
+            let text = await response.text();
+            let json = JSON.parse(text.substring(47, text.length - 2)); // Ajuste para remover texto extra
+
+            let rows = json.table.rows;
+            let meta = parseFloat(rows[0].c[1].v); // Valor da meta (2000)
+            let arrecadado = parseFloat(rows[1].c[1].v); // Valor arrecadado
+
+            let progresso = (arrecadado / meta) * 100;
+            document.getElementById("total-arrecadado").innerText = `R$ ${arrecadado.toFixed(2)}`;
+            document.getElementById("progress-bar").style.width = `${progresso}%`;
+            document.getElementById("progress-text").innerText = `${Math.round(progresso)}%`;
+        } catch (error) {
+            console.error("Erro ao buscar dados da planilha:", error);
+        }
+    }
+
+    atualizarProgresso();
+    setInterval(atualizarProgresso, 30000); // Atualiza a cada 30 segundos
+</script>
+
 </body>
 </html>
