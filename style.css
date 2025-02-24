@@ -97,19 +97,9 @@ h1 {
 }
 
 @media (max-width: 768px) {
-    .section:nth-child(2) {
+    .section {
         flex-direction: column;
         text-align: center;
-    }
-    .section:nth-child(2) img {
-        order: 2;
-        max-width: 100%;
-        display: block;
-        margin: 10px auto;
-    }
-    .section:nth-child(2) .text {
-        order: 1;
-        max-width: 100%;
     }
     .section img {
         order: 2;
@@ -119,4 +109,5 @@ h1 {
         order: 1;
         max-width: 100%;
     }
+}
 }
