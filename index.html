@@ -70,6 +70,7 @@
             console.error("Erro ao copiar a chave PIX:", err);
         });
     }
+
     async function atualizarProgresso() {
         try {
             let response = await fetch("https://docs.google.com/spreadsheets/d/1r6KiQre7fttVOwdhrWqYg6NXZEup9JTQY2XRQrrw4vw/gviz/tq?tq=SELECT+A,B&gid=0&tqx=out:json");
@@ -77,12 +78,10 @@
 
             console.log("Resposta bruta da API:", text); // Debug para ver a resposta real
 
-            // Verifica se a resposta contém "setResponse", indicando que os dados estão corretos
             if (!text.includes("google.visualization.Query.setResponse")) {
                 throw new Error("A resposta da API não está no formato esperado.");
             }
 
-            // Remover caracteres extras antes de converter para JSON
             let jsonText = text.substring(text.indexOf("(") + 1, text.lastIndexOf(")"));
             let json = JSON.parse(jsonText);
 
@@ -94,7 +93,6 @@
                 return;
             }
 
-            // Extraindo os valores corretamente
             let meta = parseFloat(rows[0].c[0]?.v || 2000);
             let arrecadado = parseFloat(rows[0].c[1]?.v || 0);
 
@@ -112,6 +110,13 @@
 
     atualizarProgresso();
     setInterval(atualizarProgresso, 30000); // Atualiza a cada 30 segundos
+
+    // 🚀 Adiciona mensagem engraçada ao tentar sair da página
+    window.addEventListener("beforeunload", function (event) {
+        event.preventDefault();
+        event.returnValue = "Se fechar essa página agora, você será amaldiçoado com churrasco queimado e cerveja morna por 10 anos! 😨🔥🍺";
+        return "Se fechar essa página agora, você será amaldiçoado com churrasco queimado e cerveja morna por 10 anos! 😨🔥🍺";
+    });
 </script>
 
 </body>
