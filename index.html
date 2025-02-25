@@ -76,16 +76,12 @@
             let response = await fetch("https://docs.google.com/spreadsheets/d/1r6KiQre7fttVOwdhrWqYg6NXZEup9JTQY2XRQrrw4vw/gviz/tq?tq=SELECT+A,B&gid=0&tqx=out:json");
             let text = await response.text();
 
-            console.log("Resposta bruta da API:", text); // Debug para ver a resposta real
-
             if (!text.includes("google.visualization.Query.setResponse")) {
                 throw new Error("A resposta da API não está no formato esperado.");
             }
 
             let jsonText = text.substring(text.indexOf("(") + 1, text.lastIndexOf(")"));
             let json = JSON.parse(jsonText);
-
-            console.log("JSON Extraído:", json); // Debug para ver os dados extraídos
 
             let rows = json.table.rows;
             if (!rows || rows.length === 0 || !rows[0].c) {
@@ -95,8 +91,6 @@
 
             let meta = parseFloat(rows[0].c[0]?.v || 2000);
             let arrecadado = parseFloat(rows[0].c[1]?.v || 0);
-
-            console.log("Meta:", meta, "Arrecadado:", arrecadado); // Debug
 
             let progresso = (arrecadado / meta) * 100;
             document.getElementById("total-arrecadado").innerText = `R$ ${arrecadado.toFixed(2)}`;
@@ -111,12 +105,19 @@
     atualizarProgresso();
     setInterval(atualizarProgresso, 30000); // Atualiza a cada 30 segundos
 
-    // 🚀 Adiciona mensagem engraçada ao tentar sair da página
+    // 🚀 Mensagem engraçada ao tentar sair da página
     window.addEventListener("beforeunload", function (event) {
-        var mensagem = "Se fechar essa página agora, você será amaldiçoado com churrasco queimado e cerveja morna por 10 anos! 😨🔥🍺";
-        event.returnValue = mensagem;
-        return mensagem;
+        event.returnValue = "Se fechar essa página agora, você será amaldiçoado com churrasco queimado e cerveja morna por 10 anos! 😨🔥🍺";
+        return "Se fechar essa página agora, você será amaldiçoado com churrasco queimado e cerveja morna por 10 anos! 😨🔥🍺";
     });
+
+    // 🚀 Mensagem se o mouse se aproximar do botão de fechar
+    document.addEventListener("mouseleave", function (event) {
+        if (event.clientY < 10) {
+            alert("OPA! Vai sair sem ajudar na cervejeira? Pense bem... 10 anos de cerveja quente não é brincadeira! 😨🔥🍺");
+        }
+    });
+
 </script>
 
 </body>
