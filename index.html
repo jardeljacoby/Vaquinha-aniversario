@@ -108,16 +108,10 @@
         } catch (error) {
             console.error("Erro ao buscar dados da planilha:", error);
         }
+    }
 
     atualizarProgresso();
     setInterval(atualizarProgresso, 30000); // Atualiza a cada 30 segundos
-
-            // 🚀 Adiciona uma mensagem engraçada ao tentar sair da página
-        window.addEventListener("beforeunload", function (event) {
-        event.preventDefault();
-        event.returnValue = "Se fechar essa página agora, você será amaldiçoado com churrasco queimado e cerveja morna por 10 anos! 😨🔥🍺";
-        return "Se fechar essa página agora, você será amaldiçoado com churrasco queimado e cerveja morna por 10 anos! 😨🔥🍺";
-    });
 </script>
 
 </body>
